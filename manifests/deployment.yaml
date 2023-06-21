@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whirlpool
+  namespace: default
+  labels:
+    app: whirlpool
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: whirlpool
+  template:
+    metadata:
+      labels:
+        app: whirlpool
+    spec:
+      containers:
+      - name: whirlpool
+        image: ghcr.io/sebastianmarines/whirlpool_ac:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: github-token
