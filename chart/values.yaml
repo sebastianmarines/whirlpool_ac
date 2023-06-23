@@ -1,0 +1,9 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/sebastianmarines/whirlpool_ac
+  tag: latest
+  pullPolicy: Always
+  pullSecrets:
+    - name: github-token
+

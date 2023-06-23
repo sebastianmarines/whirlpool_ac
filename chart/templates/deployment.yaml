@@ -6,7 +6,7 @@ metadata:
   labels:
     app: whirlpool
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
       matchLabels:
         app: whirlpool
@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: whirlpool
-        image: ghcr.io/sebastianmarines/whirlpool_ac:latest
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-        - name: github-token
+      imagePullSecrets: {{ .Values.image.pullSecrets }}
+
