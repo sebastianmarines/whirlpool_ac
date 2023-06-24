@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+  name: whirlpool
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: whilrpool
+  endpoints:
+    - interval: 30s
+      port: web
