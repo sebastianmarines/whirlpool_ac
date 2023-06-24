@@ -10,4 +10,4 @@ spec:
       name: whilrpool
   endpoints:
     - interval: 30s
-      port: 8080
+      port: whirlpool
