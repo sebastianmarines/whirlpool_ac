@@ -9,6 +9,8 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - "chart/values.yaml"
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -86,3 +88,16 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+
+      - name: Update Version
+        run: |
+          version=$(cat ./chart/values.yaml | grep tag: | awk '{print $2}')
+          sed -i "s/$version/${{ steps.build-and-push.outputs.imageId }}/" ./chart/values.yaml
+
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@v0.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "Update image tag to `${{ steps.build-and-push.outputs.imageId }}`"
+
+
