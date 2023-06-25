@@ -90,7 +90,7 @@ func TestIsExpired(t *testing.T) {
 	}
 
 	if !expiredToken.isExpired() {
-		t.Errorf("Expected token to be expired")
+		t.Errorf("Expected tokenSingleton to be expired")
 	}
 
 	notExpiredToken := Token{
@@ -98,6 +98,6 @@ func TestIsExpired(t *testing.T) {
 	}
 
 	if notExpiredToken.isExpired() {
-		t.Errorf("Expected token to not be expired")
+		t.Errorf("Expected tokenSingleton to not be expired")
 	}
 }
