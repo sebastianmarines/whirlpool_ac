@@ -42,7 +42,9 @@ func main() {
 				return
 			}
 
-			metrics.WithLabelValues(data.ApplianceId, "temperature").Add(temperatureFloat)
+			fmt.Println(temperatureFloat)
+
+			metrics.WithLabelValues(data.ApplianceId, "temperature").Set(temperatureFloat)
 			time.Sleep(60 * time.Second)
 		}
 	}()
