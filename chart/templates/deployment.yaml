@@ -8,18 +8,34 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
-      matchLabels:
-        app: whirlpool
+    matchLabels:
+      app: whirlpool
   template:
     metadata:
       labels:
         app: whirlpool
     spec:
       containers:
-      - name: whirlpool
-        image: {{ .Values.image.repository }}@{{ .Values.image.tag }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - containerPort: 8080
+        - name: whirlpool
+          image: {{ .Values.image.repository }}@{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.usernameKey }}
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.passwordKey }}
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.clientSecretKey }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

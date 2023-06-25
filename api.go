@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -23,7 +22,7 @@ type Response struct {
 func getToken() (error, *Token) {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		fmt.Println(err)
 	}
 	var (
 		password     = os.Getenv("PASSWORD")

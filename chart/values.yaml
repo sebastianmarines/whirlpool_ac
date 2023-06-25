@@ -5,3 +5,9 @@ image:
   tag: sha256:dde1044816b3b119e8aa19b8e029d7002f292e92ec5b9f6705e9ee7b56d24c9e
   pullPolicy: Always
   pullSecret: github-token
+
+secret:
+  name: whirlpool-creds
+  usernameKey: username
+  passwordKey: password
+  clientSecretKey: client_secret
