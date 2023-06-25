@@ -19,6 +19,7 @@ type Token struct {
 	Jti         string   `json:"jti"`
 	ClientId    string   `json:"client_id"`
 	SAID        []string `json:"SAID"`
+	AccessToken string
 }
 
 func DecodeToken(token string) Token {
