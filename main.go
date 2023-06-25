@@ -11,8 +11,8 @@ import (
 	"time"
 )
 
-var metrics = prometheus.NewCounterVec(
-	prometheus.CounterOpts{
+var metrics = prometheus.NewGaugeVec(
+	prometheus.GaugeOpts{
 		Name: "appliance_metrics",
 		Help: "Appliance metrics",
 	},
