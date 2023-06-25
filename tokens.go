@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"strings"
+	"time"
 )
 
 type Token struct {
@@ -13,14 +14,14 @@ type Token struct {
 	Username    string   `json:"UserName"`
 	User_name   string   `json:"user_name"`
 	Scope       []string `json:"scope"`
-	Exp         int      `json:"exp"`
+	Exp         int64    `json:"exp"`
 	Authorities []string `json:"authorities"`
 	Jti         string   `json:"jti"`
 	ClientId    string   `json:"client_id"`
 	SAID        []string `json:"SAID"`
 }
 
-func decodeToken(token string) Token {
+func DecodeToken(token string) Token {
 	payload := strings.Split(token, ".")[1]
 
 	decoded, err := base64.RawURLEncoding.DecodeString(payload)
@@ -36,4 +37,8 @@ func decodeToken(token string) Token {
 	}
 
 	return t
+}
+
+func (t *Token) isExpired() bool {
+	return t.Exp < time.Now().Unix()
 }
