@@ -25,26 +25,27 @@ func main() {
 	prometheus.MustRegister(metrics)
 
 	go func() {
+		err, token := getToken()
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		appliances := token.SAID
+
 		for {
-			err, data := getData("WPR4AJV7DN97D")
+			for _, appliance := range appliances {
+				err, data := getData(appliance)
 
-			if err != nil {
-				fmt.Println(err)
-				return
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+
+				setMetricsForAppliance(data)
+
 			}
-
-			temperature := data.Attributes.SysOpstatusdisplaytemp.Value
-			temperature = temperature[0:len(temperature)-1] + "." + temperature[len(temperature)-1:]
-			fmt.Println(temperature)
-			temperatureFloat, err := strconv.ParseFloat(temperature, 64)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			fmt.Println(temperatureFloat)
-
-			metrics.WithLabelValues(data.ApplianceId, "temperature").Set(temperatureFloat)
 			time.Sleep(60 * time.Second)
 		}
 	}()
@@ -62,4 +63,17 @@ func HomeHandler(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func setMetricsForAppliance(appliance ApplianceData) {
+	// Temperature
+	temperature := appliance.Attributes.SysOpstatusdisplaytemp.Value
+	temperature = temperature[0:len(temperature)-1] + "." + temperature[len(temperature)-1:]
+	temperatureFloat, err := strconv.ParseFloat(temperature, 64)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	metrics.WithLabelValues(appliance.ApplianceId, "temperature").Set(temperatureFloat)
 }
