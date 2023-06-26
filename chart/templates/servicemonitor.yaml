@@ -9,5 +9,5 @@ spec:
     matchLabels:
       app: whirlpool
   endpoints:
-    - interval: 30s
+    - interval: 350s
       port: whirlpool

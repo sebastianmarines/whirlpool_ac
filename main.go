@@ -46,7 +46,7 @@ func main() {
 				setMetricsForAppliance(data)
 
 			}
-			time.Sleep(60 * time.Second)
+			time.Sleep(5 * time.Minute)
 		}
 	}()
 
