@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/sebastianmarines/whirlpool_ac
-  tag: sha256:171d90c7c8a7c81ddea7f696557895d350868f354dd1d0cbfc3fc99101b4d116
+  tag: sha256:b48a015728bfa8bd59fcaa2ea56e9ead5c3e21dc2b3ce9aa5047a82a38800a65
   pullPolicy: Always
   pullSecret: github-token
 
