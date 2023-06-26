@@ -58,7 +58,7 @@ func main() {
 	log.Fatal(err)
 }
 
-func HomeHandler(writer http.ResponseWriter, request *http.Request) {
+func HomeHandler(writer http.ResponseWriter, _ *http.Request) {
 	_, err := writer.Write([]byte("Hello World"))
 	if err != nil {
 		return
@@ -66,6 +66,10 @@ func HomeHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func setMetricsForAppliance(appliance ApplianceData) {
+	if appliance.Attributes.Online.Value != "1" {
+		metrics.WithLabelValues(appliance.ApplianceId, "online").Set(0)
+		metrics.WithLabelValues(appliance.ApplianceId, "humidity").Set(0)
+	}
 	// Temperature
 	temperature := appliance.Attributes.SysOpstatusdisplaytemp.Value
 	temperature = temperature[0:len(temperature)-1] + "." + temperature[len(temperature)-1:]
@@ -76,4 +80,14 @@ func setMetricsForAppliance(appliance ApplianceData) {
 	}
 
 	metrics.WithLabelValues(appliance.ApplianceId, "temperature").Set(temperatureFloat)
+
+	// Humidity
+	humidity := appliance.Attributes.SysOpstatusdisplayhumidity.Value
+	humidityFloat, err := strconv.ParseFloat(humidity, 64)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	metrics.WithLabelValues(appliance.ApplianceId, "humidity").Set(humidityFloat)
 }
